@@ -1,0 +1,67 @@
+<!doctype html>
+
+<html lang="pt-br">
+
+<head>
+
+  <meta charset="utf-8">
+
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <link rel="stylesheet" href="./css/style.css">
+
+  <title>Simple Generator API</title>
+
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  
+</head>
+
+<body>
+
+  <div class="topnav">
+    <a href="Generator.html">Home</a>
+    <a href="Login.html" onclick="signout()">Logout</a>
+    <a class="active" href="Perfil.html">Perfil</a>
+  </div>
+
+  <div class="conteudo">
+    <main class="row row-cols-1 row-cols-md-3 g-4"></main>
+  </div>
+  
+  <script type="module">
+    import Auth from './script/auth.js';
+
+    const main = document.querySelector('main');
+
+    async function userid() {
+      const config = {
+        method: 'get',
+        headers: {
+          Authorization: `Bearer ${Auth.getToken()}`,
+        },
+      };
+
+      const url = '/userid';
+
+      const userID = await (await fetch(url, config)).json();
+
+      username(userID);
+    };
+
+    function username(data) {
+      const view = `
+      <div class="titulo">
+        <h1>${data.name}</h1>
+      </div>
+      <div class="conteudo">
+        <img src="${data.image}" style="max-width: 400px; border-radius: 50%;">
+        <main class="row row-cols-1 row-cols-md-3 g-4"></main>
+      </div>`;
+
+      main.insertAdjacentHTML('afterbegin', view);
+    };
+
+    userid()
+  </script>
+</body>
+</html>
